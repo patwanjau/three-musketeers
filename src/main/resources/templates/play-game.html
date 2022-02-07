@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>GoT: Play</title>
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            border-collapse: collapse;
+        }
+    </style>
+</head>
+<body>
+<div>
+    <div>
+        <table>
+            <tr>
+                <th>Game Status</th>
+                <td th:text="${game.status.name()}"></td>
+            </tr>
+            <tr>
+                <th>Original Value</th>
+                <td th:text="${game.startValue}"></td>
+            </tr>
+            <tr>
+                <th>Current Result</th>
+                <td th:text="${lastPlay}"></td>
+            </tr>
+        </table>
+    </div>
+    <form th:action="@{/games/play}" method="post" th:object="${vote}">
+        <input type="hidden" th:name="player" th:value="${vote.player}"/>
+        <input type="hidden" th:name="initiator" th:value="${vote.initiator}"/>
+        <label for="move">Your move</label>
+        <input th:value="${vote.vote}" placeholder="Enter move" th:name="vote" id="move"/>
+        <button type="submit">Play</button>
+    </form>
+</div>
+<hr/>
+<table>
+    <thead>
+    <tr>
+        <th>Player</th>
+        <th>Result</th>
+        <th>Time</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr th:if="${moves.empty}">
+        <td>--</td>
+        <td>--</td>
+        <td>--</td>
+    </tr>
+    <tr th:each="move: ${moves}">
+        <td th:text="${move.player}"></td>
+        <td th:text="${move.result}"></td>
+        <td th:text="${move.playedAt}"></td>
+    </tr>
+    </tbody>
+</table>
+</body>
+</html>

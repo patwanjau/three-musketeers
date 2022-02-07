@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<form th:object="${game}" th:action="@{/games/start}" method="post">
+    <div th:if="${game.player}">
+        <span th:text="'Player: '+ ${game.player}">No player</span>
+        <input type="hidden" th:value="${game.player}" th:name="player"/>
+    </div>
+    <div th:unless="${game.player}">
+        <label for="player">Player</label>
+        <input th:value="${game.player}" placeholder="Player's Username" th:name="player" id="player"/>
+        <span th:if="${#fields.hasErrors('player')}" th:errors="*{player}"></span>
+    </div>
+    <div>
+        <label for="initiator">Who starts the game? </label>
+        <select th:name="initiator" id="initiator">
+            <option>Choose Initiator</option>
+            <option th:value="engine">Computer</option>
+            <option th:value="human">Player</option>
+        </select>
+        <span th:if="${#fields.hasErrors('initiator')}" th:errors="*{initiator}"></span>
+    </div>
+    <button type="submit">Start Game</button>
+</form>
+</body>
+</html>

@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<div>Create Account</div>
+<form th:action="@{/users/signup}" method="post" th:object="${player}">
+    <label for="username">Username: </label><input type="text" th:name="username" id="username" th:value="${player.username}"/>
+    <span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span>
+    <br/>
+    <label for="fullname">Full Name: </label><input type="text" th:name="fullname" id="fullname" th:value="${player.fullname}"/>
+    <span th:if="${#fields.hasErrors('fullname')}" th:errors="*{fullname}"></span>
+    <br/>
+    <button type="submit">Sign Up</button>
+</form>
+</body>
+</html>
