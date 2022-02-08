@@ -1,15 +1,16 @@
 package com.example.gotcc.model;
 
+import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 
-public class GameSession {
+public class GameMove {
     @NotNull
     private String player;
     @Pattern(regexp = "engine|human", message = "Please choose a valid option")
     private String initiator;
-    @Pattern(regexp = "-?\\d+", message = "Invalid entry. Must be a numeric value")
-    private String vote;
+    @Min(value = 1, message = "Invalid entry ${validateValue}. Value Must be greater than or equal to {min}")
+    private Integer value;
 
     public String getPlayer() {
         return player;
@@ -27,11 +28,11 @@ public class GameSession {
         this.initiator = initiator;
     }
 
-    public String getVote() {
-        return vote;
+    public Integer getValue() {
+        return value;
     }
 
-    public void setVote(String vote) {
-        this.vote = vote;
+    public void setValue(Integer value) {
+        this.value = value;
     }
 }

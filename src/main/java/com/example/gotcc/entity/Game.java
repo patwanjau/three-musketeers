@@ -8,13 +8,16 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 @Entity
 @Table(name = "game")
@@ -31,14 +34,26 @@ public class Game {
     private LocalDateTime completeDate;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private Status status;
+    private GameState state;
     @Enumerated(EnumType.STRING)
     @Column(name = "initiator")
     private PlayerType initiator;
     @Column(name = "start_value", nullable = false)
     private Integer startValue;
-    @OneToMany(mappedBy = "game")
+    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    @OrderBy("playedAt")
     private List<GameHistory> history;
+
+    @Transient
+    private Integer currentValue;
+
+    public Integer getCurrentValue() {
+        return currentValue;
+    }
+
+    public void setCurrentValue(Integer currentValue) {
+        this.currentValue = currentValue;
+    }
 
     @PrePersist
     public void prePersist() {
@@ -46,7 +61,7 @@ public class Game {
         int generated = rand.nextInt(300);
         startValue = generated < 100 ? (generated + 100) : generated;
         startDate = LocalDateTime.now();
-        status = Status.NEW;
+        state = GameState.NEW;
     }
 
 
@@ -82,12 +97,12 @@ public class Game {
         this.completeDate = completeDate;
     }
 
-    public Status getStatus() {
-        return status;
+    public GameState getState() {
+        return state;
     }
 
-    public void setStatus(Status status) {
-        this.status = status;
+    public void setState(GameState gameState) {
+        this.state = gameState;
     }
 
     public PlayerType getInitiator() {
@@ -114,12 +129,16 @@ public class Game {
         this.history = history;
     }
 
-    public enum Status {
+    public boolean isNew(){
+        return this.getState() == GameState.NEW;
+    }
+
+    public enum GameState {
         NEW, ACTIVE, COMPLETED, TERMINATED
     }
 
     public enum PlayerType {
-        COMPUTER("engine"), PLAYER("human");
+        COMPUTER("engine"), HUMAN("human");
         private final String type;
 
         PlayerType(String type) {
