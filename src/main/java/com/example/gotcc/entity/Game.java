@@ -1,6 +1,7 @@
 package com.example.gotcc.entity;
 
 import java.time.LocalDateTime;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Random;
 
@@ -17,7 +18,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PrePersist;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 
 @Entity
 @Table(name = "game")
@@ -43,17 +43,6 @@ public class Game {
     @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
     @OrderBy("playedAt")
     private List<GameHistory> history;
-
-    @Transient
-    private Integer currentValue;
-
-    public Integer getCurrentValue() {
-        return currentValue;
-    }
-
-    public void setCurrentValue(Integer currentValue) {
-        this.currentValue = currentValue;
-    }
 
     @PrePersist
     public void prePersist() {
@@ -133,8 +122,14 @@ public class Game {
         return this.getState() == GameState.NEW;
     }
 
+    public Integer getCurrentValue() {
+        return history.stream()
+            .max(Comparator.comparing(GameHistory::getId))
+            .map(GameHistory::getResult).orElse(startValue);
+    }
+
     public enum GameState {
-        NEW, ACTIVE, COMPLETED, TERMINATED
+        NEW, ACTIVE, FINISHED, TERMINATED
     }
 
     public enum PlayerType {

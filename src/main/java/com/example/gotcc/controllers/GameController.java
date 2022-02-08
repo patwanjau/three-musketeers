@@ -116,9 +116,6 @@ public class GameController extends BaseController {
     }
 
     private void refreshModel(Model model, Game game, GameMove gameMove) {
-        if (game.isNew()) {
-            game.setCurrentValue(game.getStartValue());
-        }
         model.addAttribute("game", game);
         if (gameMove == null) {
             gameMove = new GameMove();

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
+    <meta charset="UTF-8"/>
     <title>GoT: Play</title>
     <style>
         table, th, td {
@@ -24,17 +24,17 @@
             </tr>
             <tr>
                 <th>Current Result</th>
-                <td th:text="${game.currentValue}"></td>
+                <td th:text="${game.getCurrentValue()}"></td>
             </tr>
         </table>
     </div>
-    <form th:action="@{/games/play}" method="post" th:object="${move}">
+    <form method="post" th:action="@{/games/play}" th:object="${move}">
         <div th:unless="${game.currentValue eq 1}">
-            <input type="hidden" th:name="player" th:value="*{player}"/>
-            <input type="hidden" th:name="initiator" th:value="*{initiator}"/>
+            <input th:field="*{player}" type="hidden"/>
+            <input th:field="*{initiator}" type="hidden"/>
             <label for="move">Your move:</label><br/>
-            <input type="number" th:field="*{value}" placeholder="Enter value" th:name="value" id="move"/>
-            <span th:if="${#fields.hasErrors('value')}" th:errors="*{value}"></span><br/>
+            <input id="move" placeholder="Enter value" th:field="*{value}" type="number"/>
+            <span th:errors="*{value}" th:if="${#fields.hasErrors('value')}"></span><br/>
             <button type="submit">Play</button>
         </div>
         <div th:if="${game.currentValue eq 1}">

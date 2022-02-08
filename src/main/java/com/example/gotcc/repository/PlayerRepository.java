@@ -7,6 +7,5 @@ import org.springframework.data.repository.CrudRepository;
 import com.example.gotcc.entity.Player;
 
 public interface PlayerRepository extends CrudRepository<Player, Long> {
-
     Optional<Player> findByUsername(String username);
 }

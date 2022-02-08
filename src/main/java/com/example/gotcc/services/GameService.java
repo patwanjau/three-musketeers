@@ -24,26 +24,14 @@ public class GameService {
 
     @Transactional
     public void play(Game game, GameMove move) {
-        int currentResult = game.getStartValue();
-        if (!game.isNew()) {
-            currentResult = playHistoryRepository.findTopByGameOrderByIdDesc(game).getResult();
-        }
+        int currentResult = game.getCurrentValue();
         validateMove(move, currentResult);
-        if (move.getValue() == 1) {
-            game.setState(GameState.COMPLETED);
-            gameRepository.save(game);
-        } else if (game.isNew()) {
-            game.setState(GameState.ACTIVE);
+        if (game.isNew() || move.getValue() == 1) {
+            GameState gameState = game.isNew() ? GameState.ACTIVE : GameState.FINISHED;
+            game.setState(gameState);
             gameRepository.save(game);
         }
-
-        GameHistory history = new GameHistory();
-        history.setResult(move.getValue());
-        history.setPlayer(PlayerType.getType(move.getInitiator()));
-        history.setGame(game);
-        playHistoryRepository.save(history);
-        game.getHistory().add(history);
-        game.setCurrentValue(history.getResult());
+        saveGameMove(game, move);
     }
 
     private void validateMove(GameMove vote, int currentResult) {
@@ -53,6 +41,15 @@ public class GameService {
                 throw new InvalidVoteException("Invalid move. Value incorrect");
             }
         }
+    }
+
+    private void saveGameMove(Game game, GameMove move) {
+        GameHistory history = new GameHistory();
+        history.setResult(move.getValue());
+        history.setPlayer(PlayerType.getType(move.getInitiator()));
+        history.setGame(game);
+        playHistoryRepository.save(history);
+        game.getHistory().add(history);
     }
 
     @Transactional

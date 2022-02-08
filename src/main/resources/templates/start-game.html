@@ -1,18 +1,18 @@
 <!DOCTYPE html>
 <html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <title>Title</title>
+    <meta charset="UTF-8"/>
+    <title>GoT: Start Game</title>
 </head>
 <body>
 <form th:object="${game}" th:action="@{/games/start}" method="post">
     <div th:if="${game.player}">
         <span th:text="'Player: '+ ${game.player}">No player</span>
-        <input type="hidden" th:value="${game.player}" th:name="player"/>
+        <input type="hidden" th:field="*{player}"/>
     </div>
     <div th:unless="${game.player}">
         <label for="player">Player</label>
-        <input th:value="${game.player}" placeholder="Player's Username" th:name="player" id="player"/>
+        <input th:field="*{player}" placeholder="Player's Username" id="player"/>
         <span th:if="${#fields.hasErrors('player')}" th:errors="*{player}"></span>
     </div>
     <div>
