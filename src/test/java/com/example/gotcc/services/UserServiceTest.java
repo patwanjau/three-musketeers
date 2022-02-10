@@ -35,7 +35,9 @@ public class UserServiceTest {
     public void whenGetIndexPageReturnSignUpPage() throws Exception {
         mockMvc.perform(get("/"))
             .andExpect(status().isOk())
-            .andExpect(xpath("//input[1]/@name").string("username"));
+            .andExpect(xpath("//input[@name=\"username\"]").exists())
+            .andExpect(xpath("//input[@name=\"fullname\"]").exists())
+            .andExpect(xpath("//form[@method=\"post\" and @action=\"/users/signup\"]").exists());
     }
 
     @Test
@@ -44,13 +46,11 @@ public class UserServiceTest {
         signupParameter.add("username", "testUser1");
         signupParameter.add("fullname", "Test User1");
         mockMvc.perform(post("/users/signup")
-            .params(signupParameter))
+                .params(signupParameter))
             .andExpect(status().is3xxRedirection())
             .andExpect(redirectedUrl("/games/start"));
         Optional<Player> player = playerRepository.findByUsername(signupParameter.getFirst("username"));
         Assertions.assertTrue(player.isPresent());
-        player.ifPresent(p -> {
-            Assertions.assertEquals(signupParameter.getFirst("fullname"), p.getFullname());
-        });
+        player.ifPresent(p -> Assertions.assertEquals(signupParameter.getFirst("fullname"), p.getFullname()));
     }
 }

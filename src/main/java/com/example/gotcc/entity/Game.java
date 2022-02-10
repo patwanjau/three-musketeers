@@ -9,7 +9,6 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
-import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -40,7 +39,7 @@ public class Game {
     private PlayerType initiator;
     @Column(name = "start_value", nullable = false)
     private Integer startValue;
-    @OneToMany(mappedBy = "game", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "game")
     @OrderBy("playedAt")
     private List<GameHistory> history;
 
@@ -118,7 +117,7 @@ public class Game {
         this.history = history;
     }
 
-    public boolean isNew(){
+    public boolean isNew() {
         return this.getState() == GameState.NEW;
     }
 

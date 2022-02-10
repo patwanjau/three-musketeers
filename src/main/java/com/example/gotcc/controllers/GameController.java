@@ -5,7 +5,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -30,22 +29,22 @@ public class GameController extends BaseController {
     private final GameEngine engine = new GameEngine();
     private final String sessionKey = "player";
 
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
 
-    public GameController(GameService gameService) {
+    public GameController(GameService gameService, PlayerRepository playerRepository) {
         this.gameService = gameService;
+        this.playerRepository = playerRepository;
     }
 
     @GetMapping("/start")
     public String start(Model model, HttpSession session) {
-        GameMove game = new GameMove();
         Optional<Player> player = fetchPlayerBySession(session);
         if (player.isPresent()) {
             if (loadAvailableGame(player.get()).isPresent()) {
                 return "redirect:/games/play";
             }
         }
+        GameMove game = new GameMove();
         player.ifPresent(value -> game.setPlayer(value.getUsername()));
         model.addAttribute("game", game);
         return "start-game";

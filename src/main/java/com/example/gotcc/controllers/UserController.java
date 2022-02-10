@@ -6,7 +6,6 @@ import java.util.Optional;
 import javax.servlet.http.HttpSession;
 import javax.validation.Valid;
 
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;
 import org.springframework.validation.BindingResult;
@@ -20,10 +19,13 @@ import com.example.gotcc.repository.PlayerRepository;
 @Controller
 @RequestMapping("/users")
 public class UserController extends BaseController {
-    @Autowired
-    private ConversionService conversionService;
-    @Autowired
-    private PlayerRepository playerRepository;
+    private final PlayerRepository playerRepository;
+    private final ConversionService conversionService;
+
+    public UserController(ConversionService conversionService, PlayerRepository playerRepository) {
+        this.conversionService = conversionService;
+        this.playerRepository = playerRepository;
+    }
 
     @PostMapping("/signup")
     public String createAccount(@ModelAttribute @Valid Player player, BindingResult bindingResult, HttpSession session) {

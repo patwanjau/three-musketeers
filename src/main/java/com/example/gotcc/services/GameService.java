@@ -13,13 +13,11 @@ import com.example.gotcc.entity.Player;
 import com.example.gotcc.model.GameMove;
 import com.example.gotcc.repository.GameHistoryRepository;
 import com.example.gotcc.repository.GameRepository;
-import com.example.gotcc.repository.PlayerRepository;
 
 @Service
 public class GameService {
     private final GameEngine engine = new GameEngine();
     private GameHistoryRepository playHistoryRepository;
-    private PlayerRepository playerRepository;
     private GameRepository gameRepository;
 
     @Transactional
@@ -63,11 +61,6 @@ public class GameService {
     @Autowired
     public void setGameRepository(GameRepository gameRepository) {
         this.gameRepository = gameRepository;
-    }
-
-    @Autowired
-    public void setPlayerRepository(PlayerRepository playerRepository) {
-        this.playerRepository = playerRepository;
     }
 
     @Autowired

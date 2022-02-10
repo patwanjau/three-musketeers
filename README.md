@@ -15,7 +15,7 @@ This project is Gradle dependent, and therefore Gradle has been used as the unde
 
 This project requires use of Java 11 as the base JVM.
 
-You must also setup a **MySQL Database** and have the setup the following properties for credentials:
+You must also set up a **MySQL Database** and have the setup the following properties for credentials:
 
 | Property          | Value          |
 |-------------------|----------------|

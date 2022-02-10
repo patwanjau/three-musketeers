@@ -10,7 +10,7 @@ public class GameEngineTest {
     private GameEngine gameEngine;
 
     @BeforeEach
-    public void createEngine(){
+    public void createEngine() {
         this.gameEngine = new GameEngine();
     }
 
@@ -47,14 +47,14 @@ public class GameEngineTest {
     }
 
     @Test
-    public void testCurrentPlayValueMatchesExpectedPlay(){
+    public void testCurrentPlayValueMatchesExpectedPlay() {
         int gameResult = Integer.MAX_VALUE;
         int currentPlay = gameEngine.computeNewResult(gameResult);
         Assertions.assertTrue(gameEngine.isValidPlayResult(gameResult, currentPlay));
     }
 
     @Test
-    public void testCurrentPlayValueFailsMatchForExpectedPlay(){
+    public void testCurrentPlayValueFailsMatchForExpectedPlay() {
         int gameResult = Integer.MAX_VALUE;
         int currentPlay = gameEngine.computeNewResult(gameResult) + 1;
         Assertions.assertFalse(gameEngine.isValidPlayResult(gameResult, currentPlay));
