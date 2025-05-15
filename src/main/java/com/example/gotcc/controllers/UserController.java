@@ -3,8 +3,8 @@ package com.example.gotcc.controllers;
 import java.time.LocalDateTime;
 import java.util.Optional;
 
-import javax.servlet.http.HttpSession;
-import javax.validation.Valid;
+import jakarta.servlet.http.HttpSession;
+import jakarta.validation.Valid;
 
 import org.springframework.core.convert.ConversionService;
 import org.springframework.stereotype.Controller;

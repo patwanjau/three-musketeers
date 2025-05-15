@@ -1,7 +1,7 @@
 package com.example.gotcc.model;
 
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Pattern;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 public class Player {
     @Pattern(regexp = "^[a-zA-Z][0-9a-zA-Z]{2,}$",
