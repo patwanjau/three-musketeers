@@ -3,7 +3,7 @@ pipeline {
     stages {
         stage('Build Tool Version Check') {
             steps {
-                sh 'gradle --version'
+                sh 'gradle --version --stacktrace'
             }
         }
     }
