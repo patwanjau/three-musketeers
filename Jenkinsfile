@@ -3,6 +3,7 @@ pipeline {
     stages {
         stage('Build Tool Version Check') {
             steps {
+		sh 'echo $HOME'
 		sh 'ls -a -l ~/'
                 sh 'gradle --version --stacktrace'
             }
